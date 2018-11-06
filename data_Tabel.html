@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: aqua;
+        }
+
+        table {
+            width: 30%;
+            border: 2px double black;
+            border-collapse: collapse; 
+            display: none;  
+        }
+        th,
+        td {
+            width: 30%;
+            border: 2px double black;
+            border-collapse: collapse;
+            background-color: white;
+              
+        }
+
+    </style>
+</head>
+
+<body>
+    <center>
+        <input id="1" type="text" placeholder="Ketik nama ...">
+        <br><br>
+        <input id="2" type="date" placeholder="Ketik Tanggal lahir anda ...">
+        <br><br>
+        <input id="3" type="text" placeholder="Ketik kota ...">
+        <br><br>
+        <button onclick="sortNamaA()">Sort Nama A-B</button>
+        <button onclick="sortNamaB()">Sort Nama B-A</button>
+        <button onclick="sortUsiaA()">Sort Usia 1-2</button>
+        <button onclick="sortUsiaB()">Sort Usia 2-1</button>
+        <button onclick="sortKotaA()">Sort Kota A - B</button>
+        <button onclick="sortKotaB()">Sort Kota B - A</button>
+        <br><br>
+        <button onclick="data()">SUBMIT</button>
+        <br><br>
+
+        <table id="table">
+            <thead>
+                <tr>
+                    <th>Nama</th>
+                    <th>tgl</th>
+                    <th>bulan</th>
+                    <th>tahun</th>
+                    <th>zodiak</th>
+                    <th>usia</th>
+                    <th>pensiun</th>
+                    <th>kota</th>
+                    <th>Hapus</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+
+        </table>
+    </center>
+    <script>
+
+        var kumpul = []
+        var bulan1 = ['', 'januari', 'febuari', 'maret', 'april', 'mei', 'juni', 'juli', 'agustus', 'september', 'oktober', 'november', 'desember']
+        var tahun = new Date()
+        function data() {
+            var dataUser = {
+                nama: document.getElementById('1').value,
+                bulan:
+                    bulan1[parseInt((document.getElementById('2').value.slice(5, 7)))],
+                tahun: document.getElementById('2').value.slice(0, 4),
+                tanggal: document.getElementById('2').value.slice(8, 10),
+                kota: document.getElementById('3').value,
+                usia: tahun.getFullYear() - document.getElementById('2').value.slice(0, 4),
+                pensiun: 55 - (tahun.getFullYear() - document.getElementById('2').value.slice(0, 4)),
+                zodiak: function () {
+                    if ((this.tanggal >= 21 && this.bulan == 'maret') || (this.tanggal <= 20 && this.bulan == 'april')) {
+                        return 'aries'
+                    } else if (this.tanggal >= 21 && this.bulan == 'april' || this.tanggal <= 21 && this.bulan == 'mei') {
+                        return 'taurus'
+                    } else if (this.tanggal >= 22 && this.bulan == 'mei' || this.tanggal <= 21 && this.bulan == 'juni') {
+                        return 'gemini'
+                    }
+                    else if (this.tanggal >= 22 && this.bulan == 'juni' || this.tanggal <= 22 && this.bulan == 'juli') {
+                        return 'cancer'
+                    }
+                    else if (this.tanggal >= 23 && this.bulan == 'juli' || this.tanggal <= 22 && this.bulan == 'agustus') {
+                        return 'leo'
+                    }
+                    else if (this.tanggal >= 23 && this.bulan == 'agustus' || this.tanggal <= 22 && this.bulan == 'september') {
+                        return 'virgo'
+                    }
+                    else if (this.tanggal >= 23 && this.bulan == 'september' || this.tanggal <= 22 && this.bulan == 'oktober') {
+                        return 'libra'
+                    }
+                    else if (this.tanggal >= 23 && this.bulan == 'oktober' || this.tanggal <= 21 && this.bulan == 'november') {
+                        return 'scorpio'
+                    }
+                    else if (this.tanggal >= 22 && this.bulan == 'november' || this.tanggal <= 21 && this.bulan == 'desember') {
+                        return 'sagitarius'
+                    }
+                    else if (this.tanggal >= 22 && this.bulan == 'desember' || this.tanggal <= 20 && this.bulan == 'januari') {
+                        return 'capricorn'
+                    }
+                    else if (this.tanggal >= 21 && this.bulan == 'januari' || this.tanggal <= 19 && this.bulan == 'febuari') {
+                        return 'aquarius'
+                    }
+                    else {
+                        return 'pisces'
+                    }
+                }
+            }
+            // console.log(dataUser.bulan());
+            kumpul.push(dataUser)
+            document.getElementById("tbody").innerHTML = ''
+            document.getElementById("table").style.display = "table"
+            for (var i = 0; i < kumpul.length; i++) {
+                document.getElementById("tbody").innerHTML +=
+                    '<tr><th>' + kumpul[i].nama
+                    + '</th><th>' + kumpul[i].tanggal
+                    + '</th><th>' + kumpul[i].bulan
+                    + '</th><th>' + kumpul[i].tahun
+                    + '</th><th>' + kumpul[i].zodiak()
+                    + '</th><th>' + kumpul[i].usia
+                    + '</th><th>' + kumpul[i].pensiun
+                    + '</th><th>' + kumpul[i].kota
+                    + '</th><th>' + 
+                    '<button onclick="deleteBarang()">Hapus</button>'
+                    + '</th></tr>'
+            }
+            console.log(kumpul[i].zodiak())
+        }
+
+        function sortNamaA() {
+            kumpul.sort(function (a, b) {
+                x = a.nama.toLowerCase()
+                y = b.nama.toLowerCase()
+                if (x < y) return - 1
+                else if (x > y) return 1
+                else 0
+            })
+
+            document.getElementById("tbody").innerHTML = ''
+            for (var i = 0; i < kumpul.length; i++) {
+                document.getElementById("tbody").innerHTML +=
+                    '<tr><th>' + kumpul[i].nama
+                    + '</th><th>' + kumpul[i].tanggal
+                    + '</th><th>' + kumpul[i].bulan
+                    + '</th><th>' + kumpul[i].tahun
+                    + '</th><th>' + kumpul[i].zodiak()
+                    + '</th><th>' + kumpul[i].usia
+                    + '</th><th>' + kumpul[i].pensiun
+                    + '</th><th>' + kumpul[i].kota + '</th><th>' + '<button onclick="hapus()">Hapus</button>'
+                    + '</th></tr>'
+            }
+
+        }
+        function sortNamaB() {
+            kumpul.sort(function (a, b) {
+                x = a.nama.toLowerCase()
+                y = b.nama.toLowerCase()
+                if (x < y) return 1
+                else if (x > y) return -1
+                else 0
+            })
+
+            document.getElementById("tbody").innerHTML = ''
+            for (var i = 0; i < kumpul.length; i++) {
+                document.getElementById("tbody").innerHTML +=
+                    '<tr><th>' + kumpul[i].nama
+                    + '</th><th>' + kumpul[i].tanggal
+                    + '</th><th>' + kumpul[i].bulan
+                    + '</th><th>' + kumpul[i].tahun
+                    + '</th><th>' + kumpul[i].zodiak()
+                    + '</th><th>' + kumpul[i].usia
+                    + '</th><th>' + kumpul[i].pensiun
+                    + '</th><th>' + kumpul[i].kota + '</th><th>' + '<button onclick="hapus()">Hapus</button>'
+                    + '</th></tr>'
+            }
+
+        }
+        function sortUsiaA() {
+            kumpul.sort(function (a, b) {
+                x = a.usia
+                y = b.usia
+                if (x < y) return -1
+                else if (x > y) return 1
+                else 0
+            })
+
+            document.getElementById("tbody").innerHTML = ''
+            for (var i = 0; i < kumpul.length; i++) {
+                document.getElementById("tbody").innerHTML +=
+                    '<tr><th>' + kumpul[i].nama
+                    + '</th><th>' + kumpul[i].tanggal
+                    + '</th><th>' + kumpul[i].bulan
+                    + '</th><th>' + kumpul[i].tahun
+                    + '</th><th>' + kumpul[i].zodiak()
+                    + '</th><th>' + kumpul[i].usia
+                    + '</th><th>' + kumpul[i].pensiun
+                    + '</th><th>' + kumpul[i].kota + '</th><th>' + '<button onclick="hapus()">Hapus</button>'
+                    + '</th></tr>'
+            }
+
+        }
+        function sortUsiaB() {
+            kumpul.sort(function (a, b) {
+                x = a.usia
+                y = b.usia
+                if (x < y) return 1
+                else if (x > y) return -1
+                else 0
+            })
+
+            document.getElementById("tbody").innerHTML = ''
+            for (var i = 0; i < kumpul.length; i++) {
+                document.getElementById("tbody").innerHTML +=
+                    '<tr><th>' + kumpul[i].nama
+                    + '</th><th>' + kumpul[i].tanggal
+                    + '</th><th>' + kumpul[i].bulan
+                    + '</th><th>' + kumpul[i].tahun
+                    + '</th><th>' + kumpul[i].zodiak()
+                    + '</th><th>' + kumpul[i].usia
+                    + '</th><th>' + kumpul[i].pensiun
+                    + '</th><th>' + kumpul[i].kota + '</th><th>' + '<button onclick="hapus()">Hapus</button>'
+                    + '</th></tr>'
+            }
+
+        }
+        function sortKotaA() {
+            kumpul.sort(function (a, b) {
+                x = a.kota.toLowerCase()
+                y = b.kota.toLowerCase()
+                if (x < y) return - 1
+                else if (x > y) return 1
+                else 0
+            })
+
+            document.getElementById("tbody").innerHTML = ''
+            for (var i = 0; i < kumpul.length; i++) {
+                document.getElementById("tbody").innerHTML +=
+                    '<tr><th>' + kumpul[i].nama
+                    + '</th><th>' + kumpul[i].tanggal
+                    + '</th><th>' + kumpul[i].bulan
+                    + '</th><th>' + kumpul[i].tahun
+                    + '</th><th>' + kumpul[i].zodiak()
+                    + '</th><th>' + kumpul[i].usia
+                    + '</th><th>' + kumpul[i].pensiun
+                    + '</th><th>' + kumpul[i].kota + '</th><th>' + 
+                        '<button onclick="hapus()">Hapus</button>'
+                    + '</th></tr>'
+            }
+
+        }
+        function sortKotaB() {
+            kumpul.sort(function (a, b) {
+                x = a.kota.toLowerCase()
+                y = b.kota.toLowerCase()
+                if (x < y) return 1
+                else if (x > y) return -1
+                else 0
+            })
+
+            document.getElementById("tbody").innerHTML = ''
+            for (var i = 0; i < kumpul.length; i++) {
+                document.getElementById("tbody").innerHTML +=
+                    '<tr><th>' + kumpul[i].nama
+                    + '</th><th>' + kumpul[i].tanggal
+                    + '</th><th>' + kumpul[i].bulan
+                    + '</th><th>' + kumpul[i].tahun
+                    + '</th><th>' + kumpul[i].zodiak()
+                    + '</th><th>' + kumpul[i].usia
+                    + '</th><th>' + kumpul[i].pensiun
+                    + '</th><th>' + kumpul[i].kota + '</th><th>' + '<button onclick="hapus()">Hapus</button>'
+                    + '</th></tr>'
+            }
+        }
+        function deleteBarang() {
+            if(document.getElementsByTagName('button').checked){
+            document.getElementsByTagName('button').deleteRow(0);
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>
